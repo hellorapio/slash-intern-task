@@ -1,25 +1,24 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { CartController } from "./modules/cart/cart.controller";
-import { UsersController } from "./modules/users/users.controller";
-import { OrdersController } from "./modules/orders/orders.controller";
-import { ProductsController } from "./modules/products/products.controller";
 import { ConfigModule } from "@nestjs/config";
+import { PrismaService } from "./prisma.service";
+import { UsersModule } from "./modules/users/users.module";
+import { CartModule } from "./modules/cart/cart.module";
+import { OrdersModule } from "./modules/orders/orders.module";
+import { ProductsModule } from "./modules/products/products.module";
+import { AppController } from "./app.controller";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ".env.local",
     }),
+    UsersModule,
+    CartModule,
+    OrdersModule,
+    ProductsModule,
   ],
-  controllers: [
-    AppController,
-    CartController,
-    UsersController,
-    OrdersController,
-    ProductsController,
-  ],
-  providers: [],
+  controllers: [AppController],
+  providers: [PrismaService],
+  exports: [PrismaService],
 })
 export class AppModule {}

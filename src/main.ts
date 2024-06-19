@@ -2,12 +2,13 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const config = app.get(ConfigService);
+  const env = app.get(ConfigService);
 
-  app.setGlobalPrefix("/api/", { exclude: ["health"] });
+  app.setGlobalPrefix("/api/");
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -16,6 +17,16 @@ async function bootstrap() {
     })
   );
 
-  await app.listen(config.get("PORT"));
+  const config = new DocumentBuilder()
+    .setTitle("Order API Task")
+    .setDescription("API Description")
+    .setVersion("1.0")
+    .addTag("orders")
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  
+  SwaggerModule.setup("docs", app, document);
+
+  await app.listen(env.get("PORT"));
 }
 bootstrap();
