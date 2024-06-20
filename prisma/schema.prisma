@@ -8,7 +8,7 @@ datasource db {
   url      = env("DB")
 }
 
-model User {
+model Users {
   id        Int   @id @default(autoincrement())
   email     String   @unique
   name      String
@@ -18,46 +18,50 @@ model User {
   phone    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  cart     Cart? 
+  cart     Cart?
   orders   Orders[]
 }
 
 model Cart {
   id        Int   @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
+  user      Users     @relation(fields: [userId], references: [id])
   userId    Int      @unique
-  items     CartItem[]
+  items     CartItems[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Product {
+model CartItems {
+  id        Int   @id @default(autoincrement())
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  cartId    Int      
+  product   Products  @relation(fields: [productId], references: [id])
+  productId Int      
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, productId])
+}
+
+model Products {
   id        Int   @id @default(autoincrement())
   name      String
   description String
   stock     Int
   price     Float
-  image     String
-  cartItems CartItem[]
+  image     String?
+  brand     String?
+  productCondition ProductCondition? @default(NEW)
+  cartItems CartItems[]
   orderDetails OrderDetails[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model CartItem {
-  id        Int   @id @default(autoincrement())
-  cart      Cart     @relation(fields: [cartId], references: [id])
-  cartId    Int      
-  product   Product  @relation(fields: [productId], references: [id])
-  productId Int      
-  quantity  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Orders {
   id        Int   @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
+  user      Users     @relation(fields: [userId], references: [id])
   userId    Int
   orderDetails OrderDetails[]
   status    OrderStatus @default(PENDING)
@@ -70,11 +74,17 @@ model OrderDetails {
   id        Int   @id @default(autoincrement())
   order     Orders  @relation(fields: [orderId], references: [id])
   orderId   Int      
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Products  @relation(fields: [productId], references: [id])
   productId Int      
   quantity  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum ProductCondition {
+  NEW
+  USED
+  REFRUBISHED
 }
 
 enum OrderStatus {

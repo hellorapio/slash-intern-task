@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { PrismaService } from "./prisma.service";
 import { UsersModule } from "./modules/users/users.module";
 import { CartModule } from "./modules/cart/cart.module";
 import { OrdersModule } from "./modules/orders/orders.module";
 import { ProductsModule } from "./modules/products/products.module";
 import { AppController } from "./app.controller";
+import { PrismaModule } from "./prisma/prisma.module";
 
 @Module({
   imports: [
@@ -16,9 +16,8 @@ import { AppController } from "./app.controller";
     CartModule,
     OrdersModule,
     ProductsModule,
+    PrismaModule,
   ],
   controllers: [AppController],
-  providers: [PrismaService],
-  exports: [PrismaService],
 })
 export class AppModule {}
