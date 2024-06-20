@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import {
   IsString,
@@ -11,10 +12,12 @@ import {
 export default class CreateCouponDto {
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   code: string;
 
   @IsNotEmpty()
   @Transform(({ value }) => new Date(value))
+  @ApiProperty()
   expiresAt: Date;
 
   @IsNumber()
@@ -23,5 +26,6 @@ export default class CreateCouponDto {
   @Transform(({ value }) => parseFloat(value))
   @Min(0)
   @Max(100)
+  @ApiProperty()
   discount: number;
 }

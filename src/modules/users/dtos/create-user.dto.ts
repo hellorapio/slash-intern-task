@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import {
   IsString,
   IsNotEmpty,
@@ -10,26 +11,32 @@ export default class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @IsEmail()
+  @ApiProperty()
   email: string;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   password: string;
 
   @IsString()
   @IsNotEmpty()
   @IsAlpha()
+  @ApiProperty()
   name: string;
 
   @IsOptional()
   @IsString()
-  address: string;
+  @ApiProperty()
+  address?: string;
 
   @IsOptional()
   @IsString()
-  phone: string;
+  @ApiProperty()
+  phone?: string;
 
   @IsOptional()
   @IsString()
-  gender: string;
+  @ApiProperty({ required: false})
+  gender?: string;
 }

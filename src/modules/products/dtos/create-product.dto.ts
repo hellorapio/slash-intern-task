@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import {
   IsString,
@@ -10,33 +11,39 @@ import {
 export default class CreateProductDto {
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   name: string;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   description: string;
 
   @IsNumber()
   @IsPositive()
+  @ApiProperty()
   price: number;
 
   @IsNumber()
   @IsPositive()
+  @ApiProperty()
   stock: number;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  image: string;
+  @ApiProperty()
+  image?: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  brand: string;
+  @ApiProperty()
+  brand?: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
   @Transform(({ value }) => value?.toUpperCase())
-  productCondition: string;
+  productCondition?: string;
 }
