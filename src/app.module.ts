@@ -6,6 +6,7 @@ import { OrdersModule } from "./modules/orders/orders.module";
 import { ProductsModule } from "./modules/products/products.module";
 import { AppController } from "./app.controller";
 import { PrismaModule } from "./prisma/prisma.module";
+import { CouponsModule } from './modules/coupons/coupons.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PrismaModule } from "./prisma/prisma.module";
     OrdersModule,
     ProductsModule,
     PrismaModule,
+    CouponsModule,
   ],
   controllers: [AppController],
 })
