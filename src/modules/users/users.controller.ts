@@ -28,7 +28,7 @@ export class UsersController {
     return await this.usersService.findOne(id);
   }
 
-  @Post("/:id/orders")
+  @Get("/:id/orders")
   async getUserOrders(@Param("id", ParseIntPipe) id: number) {
     return await this.usersService.getUserOrders(id);
   }

@@ -10,11 +10,7 @@ export class UsersService {
     const user = await this.prisma.users.create({
       data: { ...data, cart: { create: {} } },
     });
-    // await this.prisma.cart.create({
-    //   data: {
-    //     userId: user.id,
-    //   },
-    // });
+
     delete user.password;
     return user;
   }

@@ -71,13 +71,18 @@ export class OrdersService {
   }
 
   async orderDetails(id: number) {
-    return await this.prisma.orders
-      .findUnique({
-        where: {
-          id,
+    return await this.prisma.orders.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        orderDetails: {
+          include: {
+            product: true,
+          },
         },
-      })
-      .orderDetails({ include: { product: true } });
+      },
+    });
   }
 
   async applyCoupon({ orderId, code }: ApplyCouponDto) {
