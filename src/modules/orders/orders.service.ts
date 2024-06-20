@@ -60,7 +60,7 @@ export class OrdersService {
   }
 
   async updateStatus(id: number, { status }: UpdateStatusDto) {
-    return await this.prisma.orders.update({
+    const order = await this.prisma.orders.update({
       where: {
         id,
       },
@@ -68,10 +68,16 @@ export class OrdersService {
         status,
       },
     });
+
+    if (!order) {
+      throw new HttpException("Order not found", 404);
+    }
+
+    return order;
   }
 
   async orderDetails(id: number) {
-    return await this.prisma.orders.findUnique({
+    const order = await this.prisma.orders.findUnique({
       where: {
         id,
       },
@@ -83,6 +89,12 @@ export class OrdersService {
         },
       },
     });
+
+    if (!order) {
+      throw new HttpException("Order not found", 404);
+    }
+
+    return order;
   }
 
   async applyCoupon({ orderId, code }: ApplyCouponDto) {
